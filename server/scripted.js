@@ -41,3 +41,6 @@ servlets.register("/fs_list", requestHandlers.fs_list);
 
 
 server.start(router.route, servlets.lookup);
+
+// reimagining the server
+require("./server2");
