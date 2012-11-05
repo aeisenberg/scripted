@@ -11,10 +11,9 @@
  *     Scott Andrews
  ******************************************************************************/
  
-/*global require exports console*/
+var fs, express, app, path, port, host;
 
-var express, app, path, port, host;
-
+fs = require('fs');
 express = require("express");
 app = express();
 
@@ -31,8 +30,46 @@ app.configure(function() {
 	}));
 });
 
-app.get('/', function (req, res) {
-	res.end('Hello World');
+app.param('accesstoken', function (req, res, next, val, param) {
+	// TODO: translate accesstoken value into securepath location
+	if (/^[a-f0-9]+$/.test(val)) {
+		req.params.accesstoken = val;
+		if (true) { // TODO check if access token is valid
+			req.params.securepath = '/';
+			next();
+		}
+		else {
+			res.status(403);
+		}
+	}
+	else {
+		next('route');
+	}
+});
+
+app.get('/:accesstoken/:file(*)', function (req, res) {
+	var file = req.params.securepath + req.params.file;
+	res.end(file);
+});
+
+app.get('/files/:accesstoken/:file(*)', function (req, res) {
+	var file = req.params.securepath + req.params.file;
+	fs.stat(file, function (err, stats) {
+		if (err) {
+			res.status(404);
+		}
+		else if (stats.isDirectory()) {
+			fs.readdir(file, function (err, files) {
+				res.type('application/vnd.scripted.directory');
+				// TODO include stats/isDirectory/isFile for each file
+				res.end(JSON.stringify(files));
+			});
+		}
+		else {
+			res.type('application/vnd.scripted.raw');
+			res.sendfile(file);
+		}
+	});
 });
 
 app.listen(port, host);
