@@ -28,6 +28,8 @@ app.configure(function() {
 		dumpExceptions: true,
 		showStack: true
 	}));
+	app.set('view engine', 'ejs');
+	app.set('view options', { layout: false });
 });
 
 app.param('accesstoken', function (req, res, next, val, param) {
@@ -49,7 +51,7 @@ app.param('accesstoken', function (req, res, next, val, param) {
 
 app.get('/:accesstoken/:file(*)', function (req, res) {
 	var file = req.params.securepath + req.params.file;
-	res.end(file);
+	res.render('editor', { file: file });
 });
 
 app.get('/files/:accesstoken/:file(*)', function (req, res) {

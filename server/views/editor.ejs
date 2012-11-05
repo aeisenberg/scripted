@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Scripted</title>
+	<base href="/" />
+	<link rel="stylesheet" type="text/css" href="css/main.css" />
+	<script data-main="scripts/setup.js" src="scripts/lib/requirejs/require.js"></script>
+	<script type="text/javascript">
+		window.location.getPath = function () { return "<%= file %>"; };
+	</script>
+</head>
+<body spellcheck="false" class="nihilo">
+	<header class="main_gradient">
+			<div class="right" id="help_open" title="Toggle Help Panel"></div>
+			<div class="right" id="side_toggle" title="Toggle Side Panel"></div>
+			<div class="right" id="console_toggle" title="Toggle Console Panel"></div>
+	</header>
+
+	<div id="main">
+		<div id="navigator-wrapper">
+			<div id="navigator-container">
+				<div id="explorer-tree">
+				</div>
+			</div>
+		</div>
+
+		<ul id="breadcrumb">
+		</ul>
+
+		<div id="editor_wrapper">
+			<div id="editor" class="scriptededitor"></div>
+			<div id="console_wrapper">
+			  <div id="console_display"></div>
+			</div>
+		</div>
+
+		<div id="side_panel">
+		</div>
+		
+		<div id="help_panel">
+			<ul id="command_list">
+			</ul>
+		</div>
+	</div>
+	
+	<footer class="main_gradient">
+		<div id="status"></div>
+	</footer>
+
+	<div id="contentassist" class="contentassist"></div>
+	
+	<div id="dialogs">
+		<!-- used to 'black out' the background when a modal dialog is opened -->
+		<div id="dialog_mask"></div>
+	
+		<div id="dialog_goto_line" class="dialog_popup">
+			<div id="dialog_message" class="dialog_content">
+			<p>Enter destination line:</p>
+			<input id="goto_line_number" type="text">
+			</div>
+			<a href="#" id="dialog_goto_line_button" class="dialog_button">OK</a>
+		</div>
+    </div>
+</body>
+</html>
