@@ -36,9 +36,7 @@ side : { // side panel can be specified as an array for multiple side panels
  * there are shortcuts and other ways to simplify the url.  See the jira issue for details.
  */
 define(['lib/json5'], function() {
-	var BASE_URL = location.protocol + "//" + location.hostname + ":" + location.port + location.pathname;
-	
-	
+
 	return {
 		/**
 		 * A function that extracts page layout from a hash and path
@@ -60,12 +58,12 @@ define(['lib/json5'], function() {
 			}
 		
 			if (!isNaN(parseInt(hash.charAt(0)))) {
-				// http://localhost:7261?path.js#10,20
+				// http://localhost:7261/editor/path.js#10,20
 				hash = "main:{range:[" + hash + "]}";
 			}
 		
 			if (hash.charAt(0) !== '{') {
-				// http://localhost:7261?path.js#main:{range:10,20}
+				// http://localhost:7261/editor/path.js#main:{range:10,20}
 				hash = '{' + hash +'}';
 			}
 
@@ -78,8 +76,8 @@ define(['lib/json5'], function() {
 			}
 
 		
-			if (path && path.charAt(0) === '?') {
-				path = path.substring(1);
+			if (path.indexOf('/editor') === 0) {
+				path = path.substring('/editor'.length);
 			}
 			try {
 				var state = JSON5.parse(hash);
@@ -122,7 +120,7 @@ define(['lib/json5'], function() {
 			if (hashIndex < 0) {
 				hashIndex = url.length;
 			}
-			var queryIndex = url.indexOf('?');
+			var queryIndex = url.indexOf('/editor') + 7;
 			var path;
 			if (queryIndex >= 0 && queryIndex < hashIndex) {
 				path = url.substring(queryIndex,hashIndex);
@@ -218,7 +216,7 @@ define(['lib/json5'], function() {
 		generateUrl : function(loc) {
 			if (typeof loc === 'string') {
 				// assume a simple file path
-				return BASE_URL + "?" + loc;
+				return "editor" + loc;
 			} else {
 				var path, wasPathDel, wasMainPathDel;
 				if (loc.path) {
@@ -236,7 +234,7 @@ define(['lib/json5'], function() {
 				} else if (wasMainPathDel) {
 					loc.main.path = path;
 				}
-				return BASE_URL + (path ? "?" + path : "") + "#" + gen;
+				return (path ? "editor" + path : "") + "#" + gen;
 			}
 		},
 	
