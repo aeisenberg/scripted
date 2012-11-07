@@ -114,6 +114,10 @@ define(['lib/json5'], function() {
 			}
 		
 			var path = url.replace(/^https?:\/\/[^\/]+/, '');
+			if (path.indexOf('/scripts/js-tests') === 0) {
+				// hack to support test cases
+				path = 'editor' + path.substr(path.indexOf('?') + 1);
+			}
 			var hashIndex = url.indexOf('#');
 			if (hashIndex < 0) {
 				hashIndex = url.length;
