@@ -244,7 +244,7 @@ function(mEditor, mKeyBinding, mPageState, mSearchClient, mOpenResourceDialog, m
 					}
 				}
 			}
-			navigate({path:filepath, range:defnrange}, target, true);
+			navigate({path:'editor'+filepath, file:filepath, range:defnrange}, target, true);
 		}
 	};
 
@@ -286,7 +286,7 @@ function(mEditor, mKeyBinding, mPageState, mSearchClient, mOpenResourceDialog, m
 		if (sidePanelClosed) {
 			var sel = window.editor.getSelection();
 			var range = [sel.start, sel.end];
-			navigate({path:window.editor.getFilePath(), range:range, 
+			navigate({path:'editor'+window.editor.getFilePath(), file:window.editor.getFilePath(), range:range,
 					scroll:$(window.editor._domNode).find('.textview').scrollTop()}, EDITOR_TARGET.sub);
 			window.subeditors[0].getTextView().focus();
 		} else {
