@@ -245,7 +245,7 @@ require(["scripted/editor/scriptedEditor", "scripted/navigator/explorer-table", 
 		window.scripted.promises = { "loadJshintrc": loadJshintrc()};
 		
 		if (window.scripted.navigator === undefined || window.scripted.navigator === true) {
-			explorer.loadResourceList(pageState.main.file/*pageParams.resource*/, false, function() {
+			explorer.loadResourceList(window.fsroot/*pageParams.resource*/, false, function() {
 					//	mGlobalCommands.setPageTarget(explorer.treeRoot, serviceRegistry, commandService, null, /* favorites target */explorer.treeRoot);
 					// highlight the row we are using
 				setTimeout(function() {explorer.highlight(pageState.main.path);},500);
