@@ -691,7 +691,7 @@ function(mEditor, mKeyBinding, mPageState, mSearchClient, mOpenResourceDialog, m
 	 * @return {boolean} true if navigation occurred successfully and false otherwise.
 	 */
 	navigate = function(editorDesc, target, doSaveState) {
-		var mainItem, filepath = editorDesc.path, range = editorDesc.range, scroll = editorDesc.scroll;
+		var mainItem, path = editorDesc.path, file = editorDesc.file, range = editorDesc.range, scroll = editorDesc.scroll;
 		// check if the editor has been created yet, or if
 		// window.editor is a dom node
 		var hasMainEditor = window.editor && window.editor.getText;
@@ -714,7 +714,7 @@ function(mEditor, mKeyBinding, mPageState, mSearchClient, mOpenResourceDialog, m
 		if (target === EDITOR_TARGET.sub || target === EDITOR_TARGET.main) {
 			var targetEditor = target === EDITOR_TARGET.main ? window.editor : window.subeditors[0];
 			var hasEditor = targetEditor && targetEditor.getText;
-			var isSame = hasEditor && targetEditor.getFilePath() === filepath;
+			var isSame = hasEditor && targetEditor.getFilePath() === file;
 			if (!isSame && hasEditor && !confirmNavigation(targetEditor)) {
 				return false;
 			}
@@ -723,18 +723,18 @@ function(mEditor, mKeyBinding, mPageState, mSearchClient, mOpenResourceDialog, m
 			if (target === EDITOR_TARGET.sub && !isSame) {
 				open_side(window.editor);
 				$('.subeditor_wrapper').remove();
-				buildSubeditor(filepath);
+				buildSubeditor(file);
 			}
 			var domNode = target === EDITOR_TARGET.main ? $('#editor') : $('.subeditor');
 			if (target === EDITOR_TARGET.main) {
 				if (!hasEditor) {
-					buildMaineditor(filepath);
+					buildMaineditor(file);
 				}
 				domNode.css('display','block');
 			}
 
 			if (!hasEditor || !isSame) {
-				targetEditor = loadEditor(filepath,  domNode[0], target);
+				targetEditor = loadEditor(file,  domNode[0], target);
 			}
 
 			if (range) {
@@ -763,10 +763,10 @@ function(mEditor, mKeyBinding, mPageState, mSearchClient, mOpenResourceDialog, m
 				if (window.scripted.navigator !== false) {
 					// if model not yet available, highlighting is handled elsewhere.
 					if (explorer.model) {
-						explorer.highlight(filepath);
+						explorer.highlight(path);
 					}
 				}
-				initializeBreadcrumbs(filepath);
+				initializeBreadcrumbs(file);
 				window.editor = targetEditor;
 			} else {
 				window.subeditors[0] = targetEditor;
@@ -782,7 +782,7 @@ function(mEditor, mKeyBinding, mPageState, mSearchClient, mOpenResourceDialog, m
 			targetEditor.getTextView().focus();
 
 		} else if (target === EDITOR_TARGET.tab) {
-			window.open(mPageState.generateUrl({path:filepath, range:range}));
+			window.open(mPageState.generateUrl({path:path, range:range}));
 		}
 
 		return false;
