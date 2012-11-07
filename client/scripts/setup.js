@@ -229,7 +229,7 @@ require(["scripted/editor/scriptedEditor", "scripted/navigator/explorer-table", 
 	};
 	
 	// TODO why is getConf on jsdepend?
-	mJsdepend.getConf(pageState.main.path, function (dotScripted) {
+	mJsdepend.getConf(pageState.main.file, function (dotScripted) {
 		scriptedLogger.info("fetched dot-scripted conf from server");
 //		scriptedLogger.info(JSON.stringify(dotScripted, null, "  ")); // too verbose to print this out
 		window.fsroot = dotScripted.fsroot;
@@ -245,7 +245,7 @@ require(["scripted/editor/scriptedEditor", "scripted/navigator/explorer-table", 
 		window.scripted.promises = { "loadJshintrc": loadJshintrc()};
 		
 		if (window.scripted.navigator === undefined || window.scripted.navigator === true) {
-			explorer.loadResourceList(window.fsroot/*pageParams.resource*/, false, function() {
+			explorer.loadResourceList(pageState.main.file/*pageParams.resource*/, false, function() {
 					//	mGlobalCommands.setPageTarget(explorer.treeRoot, serviceRegistry, commandService, null, /* favorites target */explorer.treeRoot);
 					// highlight the row we are using
 				setTimeout(function() {explorer.highlight(pageState.main.path);},500);

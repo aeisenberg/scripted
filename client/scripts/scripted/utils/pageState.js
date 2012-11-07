@@ -75,10 +75,6 @@ define(['lib/json5'], function() {
 				hash = "{main:" + hash + "}";
 			}
 
-		
-			if (path.indexOf('/editor') === 0) {
-				path = path.substring('/editor'.length);
-			}
 			try {
 				var state = JSON5.parse(hash);
 				if (typeof state !== "object") {
@@ -93,6 +89,9 @@ define(['lib/json5'], function() {
 			
 				if (path && !state.main.path) {
 					state.main.path = path;
+					if (path.indexOf('/editor') === 0) {
+						state.main.file = path.substring('/editor'.length);
+					}
 				}
 				return state;
 			} catch (e) {
@@ -116,14 +115,10 @@ define(['lib/json5'], function() {
 				return this.extractPageState(hash, splits[0]);
 			}
 		
+			var path = url.replace(/^https?:\/\/[^\/]+/, '');
 			var hashIndex = url.indexOf('#');
 			if (hashIndex < 0) {
 				hashIndex = url.length;
-			}
-			var queryIndex = url.indexOf('/editor') + 7;
-			var path;
-			if (queryIndex >= 0 && queryIndex < hashIndex) {
-				path = url.substring(queryIndex,hashIndex);
 			}
 			if (hashIndex >= 0) {
 				url = url.substring(hashIndex +1);
