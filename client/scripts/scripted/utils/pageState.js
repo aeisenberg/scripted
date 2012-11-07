@@ -89,9 +89,7 @@ define(['lib/json5'], function() {
 			
 				if (path && !state.main.path) {
 					state.main.path = path;
-					if (path.indexOf('/editor') === 0) {
-						state.main.file = path.substring('/editor'.length);
-					}
+					state.main.file = path.replace(/^\/?editor/, '');
 				}
 				return state;
 			} catch (e) {
