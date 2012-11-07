@@ -108,13 +108,13 @@ function(mEditor, mKeyBinding, mPageState, mSearchClient, mOpenResourceDialog, m
 			event.altTarget ? $(event.altTarget).attr('href') : $(event.currentTarget).attr('href'));
 		var pageState = mPageState.extractPageStateFromUrl(url);
 		if (pageState.main) {
-			var path = pageState.main.path;
-			if (isBinary(path)) {
+			var file = pageState.main.file;
+			if (isBinary(file)) {
 				alert("Cannot open binary files");
 				return false;
 			}
 
-			var histItem = mPageState.getHistoryAsObject()[path];
+			var histItem = mPageState.getHistoryAsObject()[file];
 			var range = pageState.main.range;
 			if (!range) {
 				// try to get range from history
@@ -140,7 +140,7 @@ function(mEditor, mKeyBinding, mPageState, mSearchClient, mOpenResourceDialog, m
 					}
 				}
 			}
-			navigate({path:path, range:range, scroll:scroll}, target, true);	
+			navigate({path:pageState.main.path, file:pageState.main.file, range:range, scroll:scroll}, target, true);
 		} else {
 			// not a valid url
 		}
