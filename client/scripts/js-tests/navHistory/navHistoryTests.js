@@ -237,7 +237,7 @@ define(['orion/assert', 'scripted/utils/navHistory', 'scripted/utils/pageState',
 		var isFirefox = navigator.userAgent.indexOf("Firefox") >= 0;
 		if (isFirefox) {
 			// scrollTop not working on firefox
-			assert.equal(historyMenu.children()[0].children[0].attributes[0].value, "/scripts/js-tests/scriptedClientServerTests.html?" + testResourcesRoot + "foo.js" + "#6,7");
+			assert.equal(historyMenu.children()[0].children[0].attributes[0].value, "/scripts/js-tests/scriptedClientServerTests.html?" + testResourcesRoot + "foo.js" + "#{\"main\":{\"range\":[6,7],\"scroll\":15}}");
 		} else {
 			assert.equal(historyMenu.children()[0].children[0].attributes[0].value, "/scripts/js-tests/scriptedClientServerTests.html?" + testResourcesRoot + "foo.js" + "#{\"main\":{\"range\":[6,7],\"scroll\":18}}");
 		}
@@ -246,7 +246,7 @@ define(['orion/assert', 'scripted/utils/navHistory', 'scripted/utils/pageState',
 		assert.equal(historyMenu.children()[2].children[0].innerHTML, "bar.js");
 		if (isFirefox) {
 			// scrollTop not working on firefox
-			assert.equal(historyMenu.children()[2].children[0].attributes[0].value, "/scripts/js-tests/scriptedClientServerTests.html?" + testResourcesRoot + "bar.js" + "#15,25");
+			assert.equal(historyMenu.children()[2].children[0].attributes[0].value, "/scripts/js-tests/scriptedClientServerTests.html?" + testResourcesRoot + "bar.js" + "#{\"main\":{\"range\":[15,25],\"scroll\":30}}");
 		} else {
 			assert.equal(historyMenu.children()[2].children[0].attributes[0].value, "/scripts/js-tests/scriptedClientServerTests.html?" + testResourcesRoot + "bar.js" + "#{\"main\":{\"range\":[15,25],\"scroll\":36}}");
 		}
