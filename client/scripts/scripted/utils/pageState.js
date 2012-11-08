@@ -124,6 +124,7 @@ define(['lib/json5'], function() {
 			}
 			if (hashIndex >= 0) {
 				url = url.substring(hashIndex +1);
+				path = path.split('#', 1)[0];
 			}
 			return this.extractPageState(url, path);
 		},
