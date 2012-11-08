@@ -108,13 +108,13 @@ function(mEditor, mKeyBinding, mPageState, mSearchClient, mOpenResourceDialog, m
 			event.altTarget ? $(event.altTarget).attr('href') : $(event.currentTarget).attr('href'));
 		var pageState = mPageState.extractPageStateFromUrl(url);
 		if (pageState.main) {
-			var file = pageState.main.file;
-			if (isBinary(file)) {
+			var path = pageState.main.path;
+			if (isBinary(path)) {
 				alert("Cannot open binary files");
 				return false;
 			}
 
-			var histItem = mPageState.getHistoryAsObject()[file];
+			var histItem = mPageState.getHistoryAsObject()[path];
 			var range = pageState.main.range;
 			if (!range) {
 				// try to get range from history
@@ -140,7 +140,7 @@ function(mEditor, mKeyBinding, mPageState, mSearchClient, mOpenResourceDialog, m
 					}
 				}
 			}
-			navigate({path:pageState.main.path, file:pageState.main.file, range:range, scroll:scroll}, target, true);
+			navigate({path:pageState.main.path, range:range, scroll:scroll}, target, true);
 		} else {
 			// not a valid url
 		}
@@ -244,7 +244,7 @@ function(mEditor, mKeyBinding, mPageState, mSearchClient, mOpenResourceDialog, m
 					}
 				}
 			}
-			navigate({path:'editor'+filepath, file:filepath, range:defnrange}, target, true);
+			navigate({path:filepath, range:defnrange}, target, true);
 		}
 	};
 
@@ -286,7 +286,7 @@ function(mEditor, mKeyBinding, mPageState, mSearchClient, mOpenResourceDialog, m
 		if (sidePanelClosed) {
 			var sel = window.editor.getSelection();
 			var range = [sel.start, sel.end];
-			navigate({path:'editor'+window.editor.getFilePath(), file:window.editor.getFilePath(), range:range,
+			navigate({path:window.editor.getFilePath(), range:range,
 					scroll:$(window.editor._domNode).find('.textview').scrollTop()}, EDITOR_TARGET.sub);
 			window.subeditors[0].getTextView().focus();
 		} else {
@@ -691,7 +691,7 @@ function(mEditor, mKeyBinding, mPageState, mSearchClient, mOpenResourceDialog, m
 	 * @return {boolean} true if navigation occurred successfully and false otherwise.
 	 */
 	navigate = function(editorDesc, target, doSaveState) {
-		var mainItem, path = editorDesc.path, file = editorDesc.file, range = editorDesc.range, scroll = editorDesc.scroll;
+		var mainItem, path = editorDesc.path, range = editorDesc.range, scroll = editorDesc.scroll;
 		// check if the editor has been created yet, or if
 		// window.editor is a dom node
 		var hasMainEditor = window.editor && window.editor.getText;
@@ -714,7 +714,7 @@ function(mEditor, mKeyBinding, mPageState, mSearchClient, mOpenResourceDialog, m
 		if (target === EDITOR_TARGET.sub || target === EDITOR_TARGET.main) {
 			var targetEditor = target === EDITOR_TARGET.main ? window.editor : window.subeditors[0];
 			var hasEditor = targetEditor && targetEditor.getText;
-			var isSame = hasEditor && targetEditor.getFilePath() === file;
+			var isSame = hasEditor && targetEditor.getFilePath() === path;
 			if (!isSame && hasEditor && !confirmNavigation(targetEditor)) {
 				return false;
 			}
@@ -723,18 +723,18 @@ function(mEditor, mKeyBinding, mPageState, mSearchClient, mOpenResourceDialog, m
 			if (target === EDITOR_TARGET.sub && !isSame) {
 				open_side(window.editor);
 				$('.subeditor_wrapper').remove();
-				buildSubeditor(file);
+				buildSubeditor(path);
 			}
 			var domNode = target === EDITOR_TARGET.main ? $('#editor') : $('.subeditor');
 			if (target === EDITOR_TARGET.main) {
 				if (!hasEditor) {
-					buildMaineditor(file);
+					buildMaineditor(path);
 				}
 				domNode.css('display','block');
 			}
 
 			if (!hasEditor || !isSame) {
-				targetEditor = loadEditor(file,  domNode[0], target);
+				targetEditor = loadEditor(path,  domNode[0], target);
 			}
 
 			if (range) {
@@ -766,7 +766,7 @@ function(mEditor, mKeyBinding, mPageState, mSearchClient, mOpenResourceDialog, m
 						explorer.highlight(path);
 					}
 				}
-				initializeBreadcrumbs(file);
+				initializeBreadcrumbs(path);
 				window.editor = targetEditor;
 			} else {
 				window.subeditors[0] = targetEditor;
