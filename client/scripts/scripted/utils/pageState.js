@@ -37,6 +37,8 @@ side : { // side panel can be specified as an array for multiple side panels
  */
 define(['lib/json5'], function() {
 
+	var editorPrefix = "editor";
+
 	return {
 		/**
 		 * A function that extracts page layout from a hash and path
@@ -214,7 +216,7 @@ define(['lib/json5'], function() {
 		generateUrl : function(loc) {
 			if (typeof loc === 'string') {
 				// assume a simple file path
-				return "editor" + loc;
+				return editorPrefix + loc;
 			} else {
 				var path, wasPathDel, wasMainPathDel;
 				if (loc.path) {
@@ -232,8 +234,16 @@ define(['lib/json5'], function() {
 				} else if (wasMainPathDel) {
 					loc.main.path = path;
 				}
-				return "editor" + (path ? path : "") + "#" + gen;
+				return editorPrefix + (path ? path : "") + "#" + gen;
 			}
+		},
+
+		/**
+		 * Define a custom URL prefix for the editor. Useful within unit tests
+		 * @param {String} prefix the new path prefix
+		 */
+		_setEditorPrefix : function(prefix) {
+			editorPrefix = prefix;
 		},
 	
 		storeScriptedHistory : function(histItem) {
