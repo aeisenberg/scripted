@@ -37,7 +37,7 @@ side : { // side panel can be specified as an array for multiple side panels
  */
 define(['lib/json5'], function() {
 
-	var editorPrefix = "editor";
+	var editorPrefix = "/editor";
 
 	return {
 		/**
@@ -77,7 +77,10 @@ define(['lib/json5'], function() {
 				hash = "{main:" + hash + "}";
 			}
 
-			path = path.replace(/^\/?editor/, '');
+			if (path.indexOf(editorPrefix) === 0) {
+				// hack to support test cases
+				path = path.substr(editorPrefix.length);
+			}
 			try {
 				var state = JSON5.parse(hash);
 				if (typeof state !== "object") {
@@ -116,10 +119,6 @@ define(['lib/json5'], function() {
 			}
 		
 			var path = url.replace(/^https?:\/\/[^\/]+/, '');
-			if (path.indexOf('/scripts/js-tests') === 0) {
-				// hack to support test cases
-				path = 'editor' + path.substr(path.indexOf('?') + 1);
-			}
 			var hashIndex = url.indexOf('#');
 			if (hashIndex < 0) {
 				hashIndex = url.length;
