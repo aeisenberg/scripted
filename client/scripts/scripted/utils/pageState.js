@@ -75,6 +75,7 @@ define(['lib/json5'], function() {
 				hash = "{main:" + hash + "}";
 			}
 
+			path = path.replace(/^\/?editor/, '');
 			try {
 				var state = JSON5.parse(hash);
 				if (typeof state !== "object") {
@@ -89,7 +90,6 @@ define(['lib/json5'], function() {
 			
 				if (path && !state.main.path) {
 					state.main.path = path;
-					state.main.file = path.replace(/^\/?editor/, '');
 				}
 				return state;
 			} catch (e) {
@@ -232,7 +232,7 @@ define(['lib/json5'], function() {
 				} else if (wasMainPathDel) {
 					loc.main.path = path;
 				}
-				return (path ? "editor" + path : "") + "#" + gen;
+				return "editor" + (path ? path : "") + "#" + gen;
 			}
 		},
 	

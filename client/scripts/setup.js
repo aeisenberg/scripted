@@ -229,7 +229,7 @@ require(["scripted/editor/scriptedEditor", "scripted/navigator/explorer-table", 
 	};
 	
 	// TODO why is getConf on jsdepend?
-	mJsdepend.getConf(pageState.main.file, function (dotScripted) {
+	mJsdepend.getConf(pageState.main.path, function (dotScripted) {
 		scriptedLogger.info("fetched dot-scripted conf from server");
 //		scriptedLogger.info(JSON.stringify(dotScripted, null, "  ")); // too verbose to print this out
 		window.fsroot = dotScripted.fsroot;
