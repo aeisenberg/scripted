@@ -32,12 +32,14 @@
 	});
 	
 	window.onload = function() {
-		require(["js-tests/esprima/esprimaJsContentAssistTests",
+		require(["scripted/utils/pageState",
+				 "js-tests/esprima/esprimaJsContentAssistTests",
 				 "js-tests/esprima/navigationTests", 
 				 "js-tests/esprima/summaryBuildingTests", 
 				 "js-tests/esprima/contentAssistDependencyTests",
 				 "js-tests/indexer/indexerTests"], 
-			function(jsTests, navTests, summaryTests, dependencyTests, indexerTests, navHistoryTests) {
+			function(pageState, jsTests, navTests, summaryTests, dependencyTests, indexerTests, navHistoryTests) {
+				pageState._setEditorPrefix(window.location.pathname + '?');
 				function testShim(tests) {
 					for (var t in tests) {
 						if (tests.hasOwnProperty(t)) {
